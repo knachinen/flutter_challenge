@@ -1,104 +1,103 @@
+import 'package:logger/logger.dart';
+
 typedef DictionaryData = Map<String, String>;
 
-/// A simple dictionary class that stores words and their definitions.
 class Dictionary {
-  /// Internal storage for words and their definitions.
   final DictionaryData _words;
+  final Logger _logger = Logger();
 
-  /// Creates a new instance of the [Dictionary] class.
   Dictionary() : _words = {};
 
-  /// Retrieves a copy of the current words and their definitions.
   DictionaryData get words => Map.from(_words);
 
-  /// Adds a new word and its definition to the dictionary.
-  ///
-  /// Throws [WordAlreadyExistsException] if the word already exists.
   void add({required String word, required String definition}) {
     if (_words.containsKey(word)) {
-      throw WordAlreadyExistsException(
-          'Word "$word" already exists in the dictionary.');
+      _logger.w('Word "$word" already exists in the dictionary.');
+    } else {
+      _words[word] = definition;
+      _logger.i('Added word: $word');
     }
-    _words[word] = definition;
   }
 
-  /// Updates the definition of an existing word in the dictionary.
-  ///
-  /// Throws [WordNotFoundException] if the word does not exist.
   void update({required String word, required String definition}) {
     if (_words.containsKey(word)) {
       _words[word] = definition;
+      _logger.i('Updated definition for word: $word');
     } else {
-      throw WordNotFoundException(
-          'Word "$word" not found. Use add() to add a new word.');
+      _logger.w('Word "$word" not found. Use add() to add a new word.');
     }
   }
 
-  /// Adds a new word or updates the definition of an existing word in the dictionary.
   void upsert({required String word, required String definition}) {
     _words[word] = definition;
+    _logger.i('Upserted word: $word');
   }
 
-  /// Retrieves the definition of a word from the dictionary.
   String? get(String word) {
     return _words[word];
   }
 
-  /// Deletes a word from the dictionary.
   void delete(String word) {
     _words.remove(word);
+    _logger.i('Deleted word: $word');
   }
 
-  /// Returns the number of words in the dictionary.
   int count() {
     return _words.length;
   }
 
-  /// Displays all words and their definitions in the dictionary.
   void displayAll() {
     if (_words.isEmpty) {
-      print('Dictionary is empty.');
+      _logger.i('Dictionary is empty.');
     } else {
       _words.forEach((key, value) {
-        print('$key: $value');
+        _logger.i('$key: $value');
       });
     }
   }
 
-  /// Checks if a word exists in the dictionary.
   bool exists(String word) {
     return _words.containsKey(word);
   }
 
-  /// Adds multiple words and their definitions to the dictionary.
   void bulkAdd(DictionaryData bulk) {
     _words.addAll(bulk);
+    _logger.i('Bulk added ${bulk.length} words to the dictionary.');
   }
 
-  /// Deletes multiple words from the dictionary.
   void bulkDelete(List<String> bulk) {
-    bulk.forEach(_words.remove);
+    bulk.forEach((word) {
+      if (_words.containsKey(word)) {
+        _words.remove(word);
+        _logger.i('Deleted word: $word');
+      } else {
+        _logger.w('Word "$word" not found in the dictionary.');
+      }
+    });
   }
 
-  /// Retrieves a list of words in the dictionary that start with the specified prefix.
   List<String> getWordsByPrefix(String prefix) {
     return _words.keys.where((word) => word.startsWith(prefix)).toList();
   }
 
-  /// Clears all words from the dictionary.
   void clear() {
-    _words.clear();
-    print('Dictionary cleared.');
+    try {
+      _words.clear();
+      _logger.i('Dictionary cleared.');
+    } catch (e) {
+      _logger.e('An error occurred while clearing the dictionary: $e');
+    }
   }
 
-  /// Sorts the words in the dictionary alphabetically by their keys.
   void sortByKeys() {
-    final sortedKeys = _words.keys.toList()..sort();
-    final sortedDictionary =
-        Map.fromEntries(sortedKeys.map((key) => MapEntry(key, _words[key]!)));
+    final sortedEntries = _words.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+
+    final sortedMap = Map.fromEntries(sortedEntries);
     _words.clear();
-    _words.addAll(sortedDictionary);
-    print('Dictionary sorted by keys.');
+    _words.addAll(sortedMap);
+
+    _logger.i('Dictionary sorted by keys.');
   }
 }
 
