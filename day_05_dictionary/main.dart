@@ -6,7 +6,7 @@ typedef DictionaryData = Map<String, String>;
 class Dictionary {
   /// Internal storage for words and their definitions.
   late final DictionaryData _words;
-  final Logger _logger = Logger();
+  late final Logger _logger = Logger();
 
   /// Creates a new instance of the [Dictionary] class.
   Dictionary() : _words = {};
@@ -75,21 +75,29 @@ class Dictionary {
   bool exists(String word) => _words.containsKey(word);
 
   /// Adds multiple words and their definitions to the dictionary.
-  void bulkAdd(DictionaryData bulk) {
-    _words.addAll(bulk);
-    _logger.i('Bulk added ${bulk.length} words to the dictionary.');
+  void bulkAdd(DictionaryData? bulk) {
+    if (bulk != null && bulk.isNotEmpty) {
+      _words.addAll(bulk);
+      _logger.i('Bulk added ${bulk.length} words to the dictionary.');
+    } else {
+      _logger.w('No words provided for bulkAdd.');
+    }
   }
 
   /// Deletes multiple words from the dictionary.
   void bulkDelete(List<String> bulk) {
-    bulk.forEach((word) {
-      if (_words.containsKey(word)) {
-        _words.remove(word);
-        _logger.i('Deleted word: $word');
-      } else {
-        _logger.w('Word "$word" not found in the dictionary.');
-      }
-    });
+    if (bulk.isNotEmpty) {
+      bulk.forEach((word) {
+        if (_words.containsKey(word)) {
+          _words.remove(word);
+          _logger.i('Deleted word: $word');
+        } else {
+          _logger.w('Word "$word" not found in the dictionary.');
+        }
+      });
+    } else {
+      _logger.w('No words provided for bulkDelete.');
+    }
   }
 
   /// Retrieves a list of words in the dictionary that start with the specified prefix.
