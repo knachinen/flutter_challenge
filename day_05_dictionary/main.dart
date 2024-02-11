@@ -1,75 +1,126 @@
-typedef Dict = Map<String, String>;
+typedef DictionaryData = Map<String, String>;
 
+/// A simple dictionary class that stores words and their definitions.
 class Dictionary {
-  final Dict words;
+  /// Internal storage for words and their definitions.
+  final DictionaryData _words;
 
-  Dictionary() : words = {};
+  /// Creates a new instance of the [Dictionary] class.
+  Dictionary() : _words = {};
 
+  /// Retrieves a copy of the current words and their definitions.
+  DictionaryData get words => Map.from(_words);
+
+  /// Adds a new word and its definition to the dictionary.
+  ///
+  /// Throws [WordAlreadyExistsException] if the word already exists.
   void add({required String word, required String definition}) {
-    words[word] = definition;
+    if (_words.containsKey(word)) {
+      throw WordAlreadyExistsException(
+          'Word "$word" already exists in the dictionary.');
+    }
+    _words[word] = definition;
   }
 
+  /// Updates the definition of an existing word in the dictionary.
+  ///
+  /// Throws [WordNotFoundException] if the word does not exist.
   void update({required String word, required String definition}) {
-    if (words.containsKey(word)) {
-      words[word] = definition;
+    if (_words.containsKey(word)) {
+      _words[word] = definition;
     } else {
-      print('Word "$word" not found. Use add() to add a new word.');
+      throw WordNotFoundException(
+          'Word "$word" not found. Use add() to add a new word.');
     }
   }
 
+  /// Adds a new word or updates the definition of an existing word in the dictionary.
   void upsert({required String word, required String definition}) {
-    words[word] = definition;
+    _words[word] = definition;
   }
 
+  /// Retrieves the definition of a word from the dictionary.
   String? get(String word) {
-    return words[word];
+    return _words[word];
   }
 
+  /// Deletes a word from the dictionary.
   void delete(String word) {
-    words.remove(word);
+    _words.remove(word);
   }
 
+  /// Returns the number of words in the dictionary.
   int count() {
-    return words.length;
+    return _words.length;
   }
 
-  void showAll() {
-    words.forEach((key, value) {
-      print('$key: $value');
-    });
-  }
-
-  bool exists(String word) {
-    return words.containsKey(word);
-  }
-
-  void bulkAdd(Dict bulk) {
-    words.addAll(bulk);
-  }
-
-  void bulkDelete(List<String> bulk) {
-    for (var key in bulk) {
-      words.remove(key);
+  /// Displays all words and their definitions in the dictionary.
+  void displayAll() {
+    if (_words.isEmpty) {
+      print('Dictionary is empty.');
+    } else {
+      _words.forEach((key, value) {
+        print('$key: $value');
+      });
     }
+  }
+
+  /// Checks if a word exists in the dictionary.
+  bool exists(String word) {
+    return _words.containsKey(word);
+  }
+
+  /// Adds multiple words and their definitions to the dictionary.
+  void bulkAdd(DictionaryData bulk) {
+    _words.addAll(bulk);
+  }
+
+  /// Deletes multiple words from the dictionary.
+  void bulkDelete(List<String> bulk) {
+    bulk.forEach(_words.remove);
+  }
+
+  /// Retrieves a list of words in the dictionary that start with the specified prefix.
+  List<String> getWordsByPrefix(String prefix) {
+    return _words.keys.where((word) => word.startsWith(prefix)).toList();
+  }
+
+  /// Clears all words from the dictionary.
+  void clear() {
+    _words.clear();
+    print('Dictionary cleared.');
+  }
+
+  /// Sorts the words in the dictionary alphabetically by their keys.
+  void sortByKeys() {
+    final sortedKeys = _words.keys.toList()..sort();
+    final sortedDictionary =
+        Map.fromEntries(sortedKeys.map((key) => MapEntry(key, _words[key]!)));
+    _words.clear();
+    _words.addAll(sortedDictionary);
+    print('Dictionary sorted by keys.');
   }
 }
 
-// void main() {
-//   var dict = Dictionary();
-//   dict.add(word: 'sky', definition: 'sky is blue');
-//   print("The definition of 'sky' is ${dict.get('sky')} in the dictionary.");
+/// Exception thrown when attempting to add a word that already exists.
+class WordAlreadyExistsException implements Exception {
+  final String message;
 
-//   dict.bulkAdd({
-//     'ocean': 'ocean is wide',
-//     'forest': 'forest is green',
-//     'universe': 'universe is endless'
-//   });
+  WordAlreadyExistsException(this.message);
 
-//   print("'tree' is in the dictionary: ${dict.isExist('tree')}");
-//   print("'forest' is in the dictionary: ${dict.isExist('forest')}");
-//   print("The dictionary size: ${dict.count()}");
-//   dict.showAll();
-// }
+  @override
+  String toString() => message;
+}
+
+/// Exception thrown when attempting to update or retrieve a nonexistent word.
+class WordNotFoundException implements Exception {
+  final String message;
+
+  WordNotFoundException(this.message);
+
+  @override
+  String toString() => message;
+}
 
 // test Dictionary
 void main() {
@@ -78,6 +129,7 @@ void main() {
   // Adding individual words
   dictionary.add(
       word: 'apple', definition: 'A red of green fruit that grows on trees.');
+
   dictionary.add(
       word: 'banana',
       definition: 'A long curved yellow fruit that grows in clusters.');
@@ -91,7 +143,7 @@ void main() {
   print(dictionary.get('apple'));
 
   // Showing all words
-  dictionary.showAll();
+  dictionary.displayAll();
 
   // Deleting a word
   dictionary.delete('apple');
@@ -101,7 +153,7 @@ void main() {
       word: 'banana', definition: 'An edible fruit, usually yellow when ripe.');
 
   // Showing all words
-  dictionary.showAll();
+  dictionary.displayAll();
 
   // add line
   print('-' * 10);
@@ -116,7 +168,7 @@ void main() {
   print(dictionary.exists('banana'));
 
   // Showing all words
-  dictionary.showAll();
+  dictionary.displayAll();
 
   // add line
   print('-' * 10);
@@ -134,7 +186,7 @@ void main() {
   print('-' * 10);
 
   // Showing all words after bulk operations
-  dictionary.showAll();
+  dictionary.displayAll();
 
   // Bulk deleting words
   dictionary.bulkDelete(['orange', 'banana']);
@@ -143,5 +195,5 @@ void main() {
   print('-' * 10);
 
   // Showing all words after bulk operations
-  dictionary.showAll();
+  dictionary.displayAll();
 }
