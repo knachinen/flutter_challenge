@@ -1,16 +1,20 @@
 typedef Dict = Map<String, String>;
 
 class Dictionary {
-  Dict words = {};
+  final Dict words;
 
-  Dictionary();
+  Dictionary() : words = {};
 
   void add({required String word, required String definition}) {
     words[word] = definition;
   }
 
   void update({required String word, required String definition}) {
-    words[word] = definition;
+    if (words.containsKey(word)) {
+      words[word] = definition;
+    } else {
+      print('Word "$word" not found. Use add() to add a new word.');
+    }
   }
 
   void upsert({required String word, required String definition}) {
@@ -36,8 +40,7 @@ class Dictionary {
   }
 
   bool exists(String word) {
-    if (words[word] != null) return true;
-    return false;
+    return words.containsKey(word);
   }
 
   void bulkAdd(Dict bulk) {
