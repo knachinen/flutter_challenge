@@ -214,6 +214,7 @@ class ScheduleCard extends StatelessWidget {
           children: [
             Row(
               children: [
+                // TIME
                 Column(
                   children: [
                     Text(
@@ -254,6 +255,7 @@ class ScheduleCard extends StatelessWidget {
                 const SizedBox(
                   width: 30,
                 ),
+                // SCHEDULE NAME
                 Text(
                   titleName.replaceAll(' ', '\n').toUpperCase(),
                   style: const TextStyle(
@@ -268,130 +270,28 @@ class ScheduleCard extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
+            // PARTICIPANTS
             Row(
               children: [
                 const SizedBox(
                   width: 70,
                 ),
-                Text(
-                  // participants[index].toUpperCase(),
-
-                  participants[0].toUpperCase(),
-                  style: TextStyle(
-                    color: participants[0].contains('me')
-                        ? Colors.black
-                        : Colors.black.withOpacity(0.3),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                for (var item in participants)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 30),
+                    child: Text(
+                      item.toUpperCase(),
+                      style: TextStyle(
+                        color: item.toLowerCase().contains('me')
+                            ? Colors.black
+                            : Colors.black.withOpacity(0.3),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  // participants[index].toUpperCase(),
-                  participants[1].toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.3),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  // participants[index].toUpperCase(),
-                  participants[2].toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.3),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  // participants[index].toUpperCase(),
-                  participants[3].toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.3),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
               ],
             )
-            // ListView(
-            //   children: [for (var item in participants) Text(item)],
-            // ),
-            // Expanded(
-            //   child: ListView.separated(
-            //     scrollDirection: Axis.horizontal,
-            //     padding: const EdgeInsets.symmetric(
-            //       vertical: 10,
-            //       horizontal: 10,
-            //     ),
-            //     itemCount: participants.length,
-            //     itemBuilder: (context, index) {
-            //       return Text("$index");
-            //     },
-            //     //   return Row(
-            //     //     children: [
-            //     //       const SizedBox(
-            //     //         width: 30,
-            //     //       ),
-            //     //       Text(
-            //     //         // participants[index].toUpperCase(),
-            //     //         'alex'.toUpperCase(),
-            //     //         style: const TextStyle(
-            //     //           fontSize: 14,
-            //     //           fontWeight: FontWeight.w600,
-            //     //         ),
-            //     //       ),
-            //     //     ],
-            //     //   );
-            //     // },
-            //     separatorBuilder: (context, index) => const SizedBox(
-            //       width: 40,
-            //     ),
-            //   ),
-            // ),
-            // Row(
-            //   children: [
-            //     const SizedBox(
-            //       width: 50,
-            //     ),
-            //     ListView.builder(
-            //       scrollDirection: Axis.horizontal,
-            //       itemCount: participants.length,
-            //       itemBuilder: (context, index) {
-            //         return Text('$index');
-            //       },
-            //     ),
-            //     ListView.builder(
-            //       itemCount: participants.length,
-            //       itemBuilder: (context, index) {
-            //         return Row(
-            //           children: [
-            //             const SizedBox(
-            //               width: 30,
-            //             ),
-            //             Text(
-            //               // participants[index].toUpperCase(),
-            //               'alex'.toUpperCase(),
-            //               style: const TextStyle(
-            //                 fontSize: 14,
-            //                 fontWeight: FontWeight.w600,
-            //               ),
-            //             ),
-            //           ],
-            //         );
-            //       },
-            //     ),
-            //   ],
-            // ),
           ],
         ),
       ),
