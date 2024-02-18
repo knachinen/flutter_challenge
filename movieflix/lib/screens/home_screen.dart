@@ -33,110 +33,120 @@ class HomeScreen extends StatelessWidget {
               // ----------------
               // Popular Movies
               // ----------------
-              const Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Popular Movies",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               SizedBox(
-                height: 400,
-                child: FutureBuilder(
-                  future: popularMovies,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Expanded(
-                        child: makeMovieList(snapshot, height: 360),
-                      );
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
+                height: 460,
+                child: Column(
+                  children: [
+                    const Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            "Popular Movies",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    FutureBuilder(
+                      future: popularMovies,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Expanded(
+                            child: makeMovieList(snapshot, height: 360),
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
               // ----------------
               // Now in Cinemas
               // ----------------
-              const Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Now in Cinemas",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               SizedBox(
-                height: 240,
-                child: FutureBuilder(
-                  future: nowMovies,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Expanded(
-                        child: makeMovieList(snapshot),
-                      );
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
+                height: 270,
+                child: Column(
+                  children: [
+                    const Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            "Now in Cinemas",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    FutureBuilder(
+                      future: nowMovies,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Expanded(
+                            child: makeMovieList(snapshot),
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
               // ----------------
               // Coming soon
               // ----------------
-              const Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Coming soon",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               SizedBox(
-                height: 240,
-                child: FutureBuilder(
-                  future: comingSoonMovies,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Expanded(
-                        child: makeMovieList(snapshot),
-                      );
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
+                height: 270,
+                child: Column(
+                  children: [
+                    const Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            "Coming soon",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    FutureBuilder(
+                      future: comingSoonMovies,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Expanded(
+                            child: makeMovieList(snapshot),
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
-              // Test
-              // TestView(comingSoonMovies: comingSoonMovies),
             ],
           ),
         ),
@@ -204,47 +214,6 @@ class HomeScreen extends StatelessWidget {
       separatorBuilder: (context, index) => const SizedBox(
         width: 40,
       ),
-    );
-  }
-}
-
-class TestView extends StatelessWidget {
-  const TestView({
-    super.key,
-    required this.comingSoonMovies,
-  });
-
-  final Future<List<MovieModel>> comingSoonMovies;
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: comingSoonMovies,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return SizedBox(
-            height: 200,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(title: Text(snapshot.data![index].title));
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
     );
   }
 }
