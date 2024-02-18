@@ -74,10 +74,6 @@ class DetailScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      // Image.network(
-                                      //   "$movieImageUrl/${snapshot.data!.posterPath}}",
-                                      // ),
-
                                       // Tagline
                                       Text(
                                         "${snapshot.data!.title}\n",
@@ -184,21 +180,6 @@ class DetailScreen extends StatelessWidget {
                                 );
                               },
                             ),
-                            // FutureBuilder(
-                            //   future: episodes,
-                            //   builder: (context, snapshot) {
-                            //     if (snapshot.hasData) {
-                            //       return Column(
-                            //         children: [
-                            //           // for (var episode in snapshot.data!) Text(episode.title)
-                            //           for (var episode in snapshot.data!)
-                            //             Episode(episode: episode, webtoonId: widget.id)
-                            //         ],
-                            //       );
-                            //     }
-                            //     return Container();
-                            //   },
-                            // )
                           ],
                         ),
                       ),
