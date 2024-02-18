@@ -172,7 +172,11 @@ class HomeScreen extends StatelessWidget {
                   "$movieThumbUrl${movie.posterPath}",
                 ),
               ),
-              Text(movie.title),
+              Text(
+                movie.title.length > 14
+                    ? "${movie.title.substring(0, 14)}..."
+                    : movie.title,
+              ),
             ],
           ),
         );

@@ -5,16 +5,11 @@ import 'package:movieflix/models/movie_detail_model.dart';
 import 'package:movieflix/models/movie_model.dart';
 
 class ApiService {
-  // static const String baseUrl =
-  //     'https://webtoon-crawler.nomadcoders.workers.dev';
-  // static const String today = "today";
-
   static const String movieBaseUrl =
       'https://movies-api.nomadcoders.workers.dev';
   static const String popular = 'popular';
   static const String now = 'now-playing';
   static const String comingSoon = 'coming-soon';
-  // now-playing, coming-soon, movie?id=1
 
   static Future<List<MovieModel>> getPopularMovies() async {
     List<MovieModel> movieInstances = [];

@@ -1,11 +1,6 @@
-// import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/material.dart';
 import 'package:movieflix/services/api_service.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:movieflix/models/movie_detail_model.dart';
-// import 'package:movieflix/models/webtoon_episode_model.dart';
-// import 'package:movieflix/services/api_service.dart';
-// import 'package:movieflix/widgets/episode_widget.dart';
 
 class DetailScreen extends StatelessWidget {
   final String title, thumb;
@@ -49,109 +44,167 @@ class DetailScreen extends StatelessWidget {
               constraints: const BoxConstraints.expand(),
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  fit: BoxFit.fitHeight,
-                  opacity: 0.7,
+                  fit: BoxFit.contain,
+                  alignment: Alignment.topCenter,
+                  opacity: 0.6,
                   image: NetworkImage(
                       "$movieImageUrl/${snapshot.data!.backdropPath}"),
                 ),
               ),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 50,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 275,
                   ),
-                  child: Column(
-                    children: [
-                      FutureBuilder(
-                        future: movie,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Image.network(
-                                //   "$movieImageUrl/${snapshot.data!.posterPath}}",
-                                // ),
-                                // Tagline
-                                Text(
-                                  "${snapshot.data!.tagline}\n",
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                // Overview
-                                Text(
-                                  "${snapshot.data!.overview}\n",
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                Text(
-                                  snapshot.data!.adult
-                                      ? "Age: Adult"
-                                      : "Age: General",
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const Text(
-                                  "\nGenres: ",
+                  SizedBox(
+                    height: 500,
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 20,
+                        ),
+                        child: Column(
+                          children: [
+                            FutureBuilder(
+                              future: movie,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Image.network(
+                                      //   "$movieImageUrl/${snapshot.data!.posterPath}}",
+                                      // ),
+
+                                      // Tagline
+                                      Text(
+                                        "${snapshot.data!.title}\n",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      // Overview
+                                      Text(
+                                        "${snapshot.data!.overview}\n",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      // Age
+                                      const Text(
+                                        "Age:",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Text(
+                                        snapshot.data!.adult
+                                            ? "Adult"
+                                            : "General",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      // Genres
+                                      const Text(
+                                        "\nGenres: ",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      for (Map<String, dynamic> item
+                                          in snapshot.data!.genres)
+                                        Text(
+                                          "- ${item["name"]}",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      // Spoken Language
+                                      const Text(
+                                        "\nSpoken Language:",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      for (Map<String, dynamic> item
+                                          in snapshot.data!.language)
+                                        Text(
+                                          item["english_name"].toString(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      // Runtime
+                                      const Text(
+                                        "\nRuntime:",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Text(
+                                        "${snapshot.data!.runtime} minutes",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }
+                                // No Data
+                                return const Text(
+                                  "...",
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
+                                    color: Colors.amber,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w800,
                                   ),
-                                ),
-
-                                for (Map<String, dynamic> item
-                                    in snapshot.data!.genres)
-                                  Text(
-                                    "- ${item["name"]}",
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  )
-                              ],
-                            );
-                          }
-                          return const Text(
-                            "...",
-                            style: TextStyle(
-                              color: Colors.amber,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w800,
+                                );
+                              },
                             ),
-                          );
-                        },
+                            // FutureBuilder(
+                            //   future: episodes,
+                            //   builder: (context, snapshot) {
+                            //     if (snapshot.hasData) {
+                            //       return Column(
+                            //         children: [
+                            //           // for (var episode in snapshot.data!) Text(episode.title)
+                            //           for (var episode in snapshot.data!)
+                            //             Episode(episode: episode, webtoonId: widget.id)
+                            //         ],
+                            //       );
+                            //     }
+                            //     return Container();
+                            //   },
+                            // )
+                          ],
+                        ),
                       ),
-
-                      // FutureBuilder(
-                      //   future: episodes,
-                      //   builder: (context, snapshot) {
-                      //     if (snapshot.hasData) {
-                      //       return Column(
-                      //         children: [
-                      //           // for (var episode in snapshot.data!) Text(episode.title)
-                      //           for (var episode in snapshot.data!)
-                      //             Episode(episode: episode, webtoonId: widget.id)
-                      //         ],
-                      //       );
-                      //     }
-                      //     return Container();
-                      //   },
-                      // )
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             );
           }
