@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:movieflix/models/movie_model.dart';
-// import 'package:movieflix/models/webtoon_model.dart';
 import 'package:movieflix/screens/detail_screen.dart';
 import 'package:movieflix/services/api_service.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
-  // final Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
   final Future<List<MovieModel>> popularMovies = ApiService.getPopularMovies();
   final Future<List<MovieModel>> nowMovies = ApiService.getNowMovies();
   final Future<List<MovieModel>> comingSoonMovies =
@@ -24,8 +22,6 @@ class HomeScreen extends StatelessWidget {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            // mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(
                 height: 60,
@@ -157,8 +153,6 @@ class HomeScreen extends StatelessWidget {
   ListView makeMovieList(AsyncSnapshot<List<MovieModel>> snapshot,
       {double? height = 180}) {
     return ListView.separated(
-      // shrinkWrap: true,
-      // physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.symmetric(
         vertical: 10,
@@ -182,10 +176,8 @@ class HomeScreen extends StatelessWidget {
             );
           },
           child: Column(
-            // mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                // width: 120,
                 height: height,
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
